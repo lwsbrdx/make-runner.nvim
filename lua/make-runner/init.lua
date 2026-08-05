@@ -164,7 +164,12 @@ local function run_with_telescope(makefile_path, recipes)
                 if #selected_recipes > 0 then
                     recipe = table.concat(selected_recipes, " ")
                 else
-                    recipe = actions_state.get_selected_entry()[1]
+                    local entry = actions_state.get_selected_entry()
+                    if entry == nil then
+                        vim.notify("No entry selected", vim.log.levels.WARN)
+                        return
+                    end
+                    recipe = entry[1]
                 end
 
                 run_recipe(recipe)
